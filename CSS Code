@@ -1,0 +1,282 @@
+* {
+    box-sizing: border-box;
+}
+
+/* Main Page */
+body {
+    --bg: #160b35;
+    --card: #291653;
+    --text: #ffffff;
+    --accent: #55d9ff;
+    --lap-bg: #38216a;
+
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+
+    transition: background 0.4s, color 0.4s;
+}
+
+/* Light Theme */
+body.light {
+    --bg: #edf2ff;
+    --card: #ffffff;
+    --text: #202747;
+    --accent: #5541d9;
+    --lap-bg: #edf0ff;
+}
+
+/* Ocean Theme */
+body.ocean {
+    --bg: #062b38;
+    --card: #0b4554;
+    --text: #ffffff;
+    --accent: #5ef5d2;
+    --lap-bg: #126071;
+}
+
+/* Pure Black Theme */
+body.black {
+    --bg: #000000;
+    --card: #111111;
+    --text: #ffffff;
+    --accent: #ffffff;
+    --lap-bg: #222222;
+}
+
+/* Stopwatch Card */
+.stopwatch {
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+    padding: 30px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--accent);
+    border-radius: 22px;
+    box-shadow: 0 12px 35px #0003;
+
+    transition: background 0.4s, color 0.4s;
+}
+
+/* Top Bar: Heading Left, Themes Right */
+.top-bar {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    position: relative;
+}
+
+h1 {
+    color: var(--accent);
+    font-size: 25px;
+    text-align: left;
+    margin: 0;
+}
+
+/* Themes Dropdown */
+.theme-menu {
+    position: relative;
+    display: inline-block;
+    flex-shrink: 0;
+    z-index: 1000;
+}
+
+#themeBtn {
+    background: var(--accent);
+    color: var(--bg);
+    cursor: pointer;
+}
+
+#themeArrow {
+    display: inline-block;
+    transition: transform 0.2s ease;
+}
+
+#themeBtn[aria-expanded="true"] #themeArrow {
+    transform: rotate(180deg);
+}
+
+.theme-options {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 190px;
+    padding: 8px;
+
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    box-shadow: 0 8px 20px #0005;
+    z-index: 1001;
+}
+
+.theme-options[hidden] {
+    display: none !important;
+}
+
+.theme-options button {
+    display: block;
+    width: 100%;
+    margin: 4px 0;
+    padding: 12px;
+
+    text-align: left;
+    background: var(--lap-bg);
+    color: var(--text);
+    border: 1px solid transparent;
+}
+
+.theme-options button:hover,
+.theme-options button.active {
+    border-color: var(--accent);
+}
+
+/* Subtitle */
+.subtitle {
+    margin: 0;
+    text-align: center;
+    opacity: 0.75;
+}
+
+/* Stopwatch Timer */
+#display {
+    width: 100%;
+    margin: 10px 0;
+
+    color: var(--accent);
+    font-size: clamp(27px, 7vw, 42px);
+    font-weight: bold;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+/* All Buttons */
+button {
+    padding: 11px 14px;
+    margin: 0;
+    border: none;
+    border-radius: 9px;
+
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    opacity: 0.85;
+}
+
+/* Stopwatch Controls */
+.buttons {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.start {
+    background: #22c55e;
+    color: white;
+}
+
+.pause {
+    background: #f59e0b;
+    color: #111111;
+}
+
+.reset {
+    background: #ef4444;
+    color: white;
+}
+
+.lap {
+    background: #448aff;
+    color: white;
+}
+
+/* Lap Times Heading */
+h2 {
+    width: 100%;
+    margin: 10px 0 0;
+    color: var(--accent);
+    text-align: center;
+}
+
+/* Lap Times List */
+#laps {
+    width: 100%;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#laps li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+
+    padding: 12px;
+    margin: 8px 0;
+
+    background: var(--lap-bg);
+    color: var(--text);
+    border-radius: 8px;
+}
+
+/* Fastest Lap */
+#laps li.fastest {
+    border: 2px solid #22c55e;
+}
+
+/* Mobile Layout */
+@media (max-width: 400px) {
+    body {
+        padding: 12px;
+    }
+
+    .stopwatch {
+        padding: 22px 14px;
+        border-radius: 16px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    #display {
+        font-size: clamp(24px, 7vw, 30px);
+    }
+
+    button {
+        padding: 10px;
+        font-size: 12px;
+    }
+
+    .theme-options {
+        min-width: 170px;
+    }
+}
