@@ -1,0 +1,157 @@
+let startTime = 0;
+let elapsedTime = 0;
+let timer = null;
+let lapTimes = [];
+
+// Stopwatch elements
+const display = document.getElementById("display");
+const laps = document.getElementById("laps");
+
+// Theme dropdown elements
+const themeBtn = document.getElementById("themeBtn");
+const themeOptions = document.getElementById("themeOptions");
+const themeButtons = document.querySelectorAll("[data-theme]");
+
+// Format and display stopwatch time
+function updateDisplay() {
+    let hours = Math.floor(elapsedTime / 3600000);
+    let minutes = Math.floor((elapsedTime % 3600000) / 60000);
+    let seconds = Math.floor((elapsedTime % 60000) / 1000);
+    let milliseconds = Math.floor((elapsedTime % 1000) / 10);
+
+    display.textContent =
+        String(hours).padStart(2, "0") + ":" +
+        String(minutes).padStart(2, "0") + ":" +
+        String(seconds).padStart(2, "0") + "." +
+        String(milliseconds).padStart(2, "0");
+}
+
+// Start stopwatch
+document.getElementById("startBtn").addEventListener("click", function () {
+    if (timer !== null) return;
+
+    startTime = Date.now() - elapsedTime;
+
+    timer = setInterval(function () {
+        elapsedTime = Date.now() - startTime;
+        updateDisplay();
+    }, 10);
+});
+
+// Pause stopwatch
+document.getElementById("pauseBtn").addEventListener("click", function () {
+    clearInterval(timer);
+    timer = null;
+});
+
+// Reset stopwatch
+document.getElementById("resetBtn").addEventListener("click", function () {
+    clearInterval(timer);
+    timer = null;
+    elapsedTime = 0;
+    lapTimes = [];
+
+    updateDisplay();
+    laps.innerHTML = "";
+});
+
+// Record lap
+document.getElementById("lapBtn").addEventListener("click", function () {
+    if (timer === null) return;
+
+    lapTimes.push(elapsedTime);
+    renderLaps();
+});
+
+// Display lap times and highlight the fastest lap
+function renderLaps() {
+    laps.innerHTML = "";
+
+    if (lapTimes.length === 0) return;
+
+    const fastest = Math.min(...lapTimes);
+
+    lapTimes.forEach(function (time, index) {
+        let hours = Math.floor(time / 3600000);
+        let minutes = Math.floor((time % 3600000) / 60000);
+        let seconds = Math.floor((time % 60000) / 1000);
+        let ms = Math.floor((time % 1000) / 10);
+
+        let formatted =
+            String(hours).padStart(2, "0") + ":" +
+            String(minutes).padStart(2, "0") + ":" +
+            String(seconds).padStart(2, "0") + "." +
+            String(ms).padStart(2, "0");
+
+        let li = document.createElement("li");
+
+        if (time === fastest) {
+            li.classList.add("fastest");
+        }
+
+        let lapLabel = document.createElement("span");
+        lapLabel.textContent = "Lap " + (index + 1);
+
+        let lapTime = document.createElement("span");
+        lapTime.textContent =
+            formatted + (time === fastest ? " 🏆" : "");
+
+        li.append(lapLabel, lapTime);
+        laps.prepend(li);
+    });
+}
+
+// Close the theme dropdown
+function closeThemeMenu() {
+    themeOptions.hidden = true;
+    themeBtn.setAttribute("aria-expanded", "false");
+}
+
+// Apply selected theme
+function applyTheme(theme) {
+    document.body.classList.remove("light", "ocean", "black");
+
+    if (theme) {
+        document.body.classList.add(theme);
+    }
+
+    themeButtons.forEach(function (button) {
+        const selected = button.dataset.theme === theme;
+
+        button.classList.toggle("active", selected);
+        button.setAttribute("aria-pressed", String(selected));
+    });
+
+    closeThemeMenu();
+}
+
+// Open or close theme dropdown
+themeBtn.addEventListener("click", function (event) {
+    event.stopPropagation();
+
+    const isOpening = themeOptions.hidden;
+
+    themeOptions.hidden = !isOpening;
+    themeBtn.setAttribute("aria-expanded", String(isOpening));
+});
+
+// Choose a theme from the dropdown
+themeButtons.forEach(function (button) {
+    button.addEventListener("click", function (event) {
+        event.stopPropagation();
+        applyTheme(button.dataset.theme);
+    });
+});
+
+// Close dropdown when clicking outside
+document.addEventListener("click", function (event) {
+    if (!event.target.closest(".theme-menu")) {
+        closeThemeMenu();
+    }
+});
+
+// Default theme: Light
+applyTheme("light");
+
+// Initialize stopwatch display
+updateDisplay();
