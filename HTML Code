@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unique Stopwatch</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="stopwatch">
+
+        <div class="top-bar">
+            <h1>STOPWATCH</h1>
+
+            <div class="theme-menu">
+                <button
+                    id="themeBtn"
+                    type="button"
+                    aria-expanded="false"
+                    aria-controls="themeOptions">
+                    🎨 Themes <span id="themeArrow">▼</span>
+                </button>
+
+                <div id="themeOptions" class="theme-options" hidden>
+                    <button type="button" data-theme="">🌌 Dark Neon</button>
+                    <button type="button" data-theme="light">☀️ Light</button>
+                    <button type="button" data-theme="ocean">🌊 Ocean</button>
+                    <button type="button" data-theme="black">🖤 Pure Black</button>
+                </div>
+            </div>
+        </div>
+
+        <p class="subtitle">Track every second</p>
+
+        <div id="display">00:00:00.00</div>
+
+        <div class="buttons">
+            <button id="startBtn" class="start">▶ Start</button>
+            <button id="pauseBtn" class="pause">⏸ Pause</button>
+            <button id="resetBtn" class="reset">↻ Reset</button>
+            <button id="lapBtn" class="lap">⚑ Lap</button>
+        </div>
+
+        <h2>Lap Times</h2>
+        <ul id="laps"></ul>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
